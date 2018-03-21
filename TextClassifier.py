@@ -2,6 +2,7 @@ import logging
 logging.getLogger("tensorflow").setLevel(logging.ERROR)
 import numpy as np
 import os
+import re
 from keras.preprocessing.text import Tokenizer
 from keras.models import Sequential
 from keras.layers import Dense
@@ -63,7 +64,7 @@ class TextClassifier:
             for file_ in os.listdir(path):
                 name_list.append(file_)
             for i in name_list:
-                file_ = open(path+i)
-                texts.append(file_.read().splitlines())
-            print(len(texts))
+                file_ = open(path+i,encoding="utf8")
+                for line in file_.read().splitlines():
+                    texts.append(re.sub('[^a-zA-z0-9\s]','',line.lower()))
             return texts
